@@ -56,6 +56,9 @@ public class Prover {
         BigInteger valToHash = g.add(g.modPow(littleV, g)).add(g.modPow(privateKey, g)).add(userID);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         littleH = new BigInteger(digest.digest(valToHash.toByteArray()));
+        System.out.println(littleH);
+        littleH = BigInteger.TEN;//(littleH.compareTo(BigInteger.ZERO) == -1) ? littleH.multiply(BigInteger.valueOf(-1)) : littleH;
+        System.out.println(littleH);
         littleR = littleV.subtract(privateKey.modPow(littleH, verifier.getQ()));
         return littleR;
     }

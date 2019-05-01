@@ -34,12 +34,27 @@ public class Verifier {
         BigInteger bigV = packet[2];
         BigInteger littleR = packet[3];
         BigInteger littleH = packet[4];
+        System.out.println(verifyV(littleR, publicKey, littleH, bigV));
         boolean correctKey =
                         (publicKey.compareTo(BigInteger.ZERO) == 1) &&
                         (publicKey.compareTo(p) == -1) &&
-                        (publicKey.modPow(q, p).compareTo(BigInteger.ONE) == 1);
-        boolean correctV = (g.modPow(littleR, g).multiply(publicKey.modPow(littleH, p))
-                            .compareTo(bigV) == 0);
+                        (publicKey.modPow(q, p).compareTo(BigInteger.ONE) == 0);
+        boolean correctV = verifyV(littleR, publicKey, littleH, bigV);
+        System.out.println("Key true: " + correctKey);
+        System.out.println("V true " + correctV);
         return correctKey && correctV;
+    }
+
+    private boolean verifyV(BigInteger littleR, BigInteger publicKey, BigInteger littleH, BigInteger bigV) {
+/*        BigInteger rModPowG = g.modPow(littleR, g);
+        BigInteger hValue = littleH;
+        BigInteger currentValue = rModPowG;
+        System.out.println(hValue);
+        while (hValue.compareTo(BigInteger.ZERO) == 1) {
+            currentValue = currentValue.multiply(publicKey).mod(littleH);
+            hValue.subtract(BigInteger.ONE);
+        }
+        return currentValue.compareTo(bigV) == 0;*/
+        return (g.modPow(littleR, g).multiply(publicKey.modPow(littleH, p)).compareTo(bigV) == 0);
     }
 }
