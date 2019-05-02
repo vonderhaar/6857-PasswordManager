@@ -4,7 +4,6 @@ import java.math.BigInteger;
 
 public class ECPoint {
 
-//    private double provenPrimeDouble = Math.pow(2,256) - Math.pow(2,32) - Math.pow(2,9) - Math.pow(2,8) - Math.pow(2,7) - Math.pow(2,6) - Math.pow(2,4) -1;
     private static BigInteger provenPrime;
 
     private final BigInteger xCoord;
@@ -15,7 +14,6 @@ public class ECPoint {
         this.xCoord = x;
         this.yCoord = y;
 
-//        System.out.println(provenPrimeDouble);
         // calculate provenPrime
         this.provenPrime = new BigInteger("2").pow(256);
         this.provenPrime = this.provenPrime.subtract(new BigInteger("2").pow(32));
