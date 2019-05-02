@@ -42,24 +42,9 @@ public class Prover {
         }
     }
 
-
-    public ECPoint getG() {
-        return this.genPoint;
+    public Packet getPacket () {
+        return new Packet(this.genPoint, this.publicKey, this.littleR, this.bigV, this.n);
     }
-
-    public BigInteger getR() {
-        return this.littleR;
-    }
-
-    public ECPoint getV() {
-        return this.bigV;
-    }
-
-    public ECPoint getPublicKey() {
-        return this.publicKey;
-    }
-
-    public BigInteger getN() { return this.n;  }
 
     private void chooseKeys() {
         this.privateKey = chooseRandom(this.n.subtract(BigInteger.ONE));

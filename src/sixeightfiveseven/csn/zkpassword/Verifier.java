@@ -20,7 +20,13 @@ public class Verifier {
         return c;
     }
 
-    public  boolean verify(ECPoint genPoint, ECPoint publicKey, BigInteger r, ECPoint V, BigInteger n) {
+    public  boolean verify(Packet packet) {
+        ECPoint genPoint = packet.getPoint();
+        ECPoint publicKey = packet.getPublicKey();
+        ECPoint V = packet.getV();
+        BigInteger r = packet.getR();
+        BigInteger n = packet.getN();
+
         ECPoint testV = genPoint.multiply(r).add(publicKey.multiply(this.c));
 
         BigInteger littleH = p.divide(n);
