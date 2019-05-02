@@ -9,6 +9,7 @@ public class Main {
 		Verifier verifier = new Verifier();
 		Prover prover = new Prover(new BigInteger("020896"), verifier);
 		boolean accept = verifier.verify(prover.getPacket());
+		System.out.println(prover.getPacket().toString());
 		System.out.println("Accepted: " + accept);
     }
 }

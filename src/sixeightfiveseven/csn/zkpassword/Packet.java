@@ -18,8 +18,25 @@ public class Packet {
         this.n = n;
     }
 
+    public Packet(String genPoint, String publicKey, String r, String V, String n) {
+        this.r = new BigInteger(r);
+        this.n = new BigInteger(n);
+
+        this.point = makePointFromString(genPoint);
+        this.publicKey = makePointFromString(publicKey);
+        this.V = makePointFromString(V);
+    }
+
     public String toString() {
         return this.point.toString() + " " + this.publicKey.toString() + " " + this.r.toString() + " " + this.V.toString() + " " + this.n.toString();
+    }
+
+    public static ECPoint makePointFromString(String s) {
+        s = s.replace("(", "");
+        s = s.replace(")", "");
+        s = s.replace(",", "");
+        String ary[] = s.split("\\s+");
+        return new ECPoint(new BigInteger(ary[0]), new BigInteger(ary[1]));
     }
 
     public ECPoint getPoint() { return this.point; }
