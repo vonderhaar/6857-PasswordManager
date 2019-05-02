@@ -18,6 +18,10 @@ public class Packet {
         this.n = n;
     }
 
+    public String toString() {
+        return this.point.toString() + " " + this.publicKey.toString() + " " + this.r.toString() + " " + this.V.toString() + " " + this.n.toString();
+    }
+
     public ECPoint getPoint() { return this.point; }
 
     public ECPoint getPublicKey() { return this.publicKey; }

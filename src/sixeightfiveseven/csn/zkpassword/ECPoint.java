@@ -26,6 +26,10 @@ public class ECPoint {
 
     }
 
+    public String toString() {
+        return "("+ this.xCoord.toString()+ ", " + this.yCoord.toString() + ")";
+    }
+
     public BigInteger getX() { return xCoord; }
 
     public BigInteger getY() { return yCoord; }
