@@ -9,18 +9,21 @@ public class Packet {
     private ECPoint V;
     private BigInteger r;
     private BigInteger n;
+    private BigInteger c;
 
-    public Packet(ECPoint genPoint, ECPoint publicKey, BigInteger r, ECPoint V, BigInteger n) {
+    public Packet(ECPoint genPoint, ECPoint publicKey, BigInteger r, ECPoint V, BigInteger n, BigInteger c) {
         this.point = genPoint;
         this.publicKey = publicKey;
         this.r = r;
         this.V = V;
         this.n = n;
+        this.c = c;
     }
 
-    public Packet(String genPoint, String publicKey, String r, String V, String n) {
+    public Packet(String genPoint, String publicKey, String r, String V, String n, String c) {
         this.r = new BigInteger(r);
         this.n = new BigInteger(n);
+        this.c = new BigInteger(c);
 
         this.point = makePointFromString(genPoint);
         this.publicKey = makePointFromString(publicKey);
@@ -48,4 +51,6 @@ public class Packet {
     public BigInteger getR() { return this.r; }
 
     public BigInteger getN() { return this.n; }
+
+    public BigInteger getC() { return this.c; }
 }

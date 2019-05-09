@@ -4,6 +4,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Prover {
 
@@ -15,6 +18,7 @@ public class Prover {
     private BigInteger littleH;
     private BigInteger littleR;
     private Verifier verifier;
+    private BigInteger c;
 
     // define generator point and big prime n
     private BigInteger xCoord = new BigInteger("55066263022277343669578718895168534326250603453777594175500187360389116729240");
@@ -27,11 +31,44 @@ public class Prover {
         this.verifier = verifier;
         chooseKeys();
         computeV();
+        try {
+            makeChallenge();
+        }
+        catch (NoSuchAlgorithmException e) {
+            // Do nothing
+        }
         computeR();
     }
 
     public Packet getPacket () {
-        return new Packet(this.genPoint, this.publicKey, this.littleR, this.bigV, this.n);
+        return new Packet(this.genPoint, this.publicKey, this.littleR, this.bigV, this.n, this.c);
+    }
+
+    private void makeChallenge() throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        List<Byte> toHashList = new ArrayList<>();
+        addByteArray(toHashList, xCoord.toByteArray());
+        addByteArray(toHashList, yCoord.toByteArray());
+        addByteArray(toHashList, bigV.getX().toByteArray());
+        addByteArray(toHashList, bigV.getY().toByteArray());
+        addByteArray(toHashList, publicKey.getX().toByteArray());
+        addByteArray(toHashList, publicKey.getY().toByteArray());
+        addByteArray(toHashList, userID.toByteArray());
+
+        byte[] toHash = new byte[toHashList.size()];
+        for(int i = 0; i < toHashList.size(); i++) {
+            toHash[i] = toHashList.get(i).byteValue();
+        }
+        this.c = new BigInteger(digest.digest(toHash));
+        // TODO: ask Leo if taking absolute value is valid?
+        this.c = this.c.abs();
+        System.out.println(this.c);
+    }
+
+    private static void addByteArray(List<Byte> aryList, byte[] ary) {
+        for (byte b : ary) {
+            aryList.add(b);
+        }
     }
 
     private void chooseKeys() {
@@ -47,7 +84,7 @@ public class Prover {
     }
 
     private void computeR() {
-        this.littleR = this.littleV.subtract(this.privateKey.multiply(verifier.getC())).mod(this.n);
+        this.littleR = this.littleV.subtract(this.privateKey.multiply(this.c)).mod(this.n);
     }
 
     private BigInteger chooseRandom(BigInteger max) {
