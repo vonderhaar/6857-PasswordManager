@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 public class Main {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-
+		System.out.println("end me");
 
 		PrintStream out = new PrintStream(new FileOutputStream("/home/sylvielee/Desktop/out.txt"));
 		out.println("this is a test");
