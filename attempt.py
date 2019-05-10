@@ -13,13 +13,13 @@ def main(a,b,c,d,e,f,g,h):
 
 if __name__ == "__main__":
     # expect 8 arguments
-    a = int(sys.argv[1])
-    b = int(sys.argv[2])
-    c = int(sys.argv[3])
-    d = int(sys.argv[4])
-    e = int(sys.argv[5])
-    f = int(sys.argv[6])
-    g = int(sys.argv[7])
-    h = int(sys.argv[8])
-    i = int(sys.argv[9]) 
+    a = sys.argv[1]
+    b = sys.argv[2]
+    c = sys.argv[3]
+    d = sys.argv[4]
+    e = sys.argv[5]
+    f = sys.argv[6]
+    g = sys.argv[7]
+    h = sys.argv[8]
+    i = sys.argv[9] 
     main(a, b, c, d, e, f, g, h)
