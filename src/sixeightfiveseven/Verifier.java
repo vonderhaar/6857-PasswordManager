@@ -15,12 +15,7 @@ public class Verifier {
 
     }
 
-    public  boolean verify(Packet packet) throws IOException {
-        ECPoint genPoint = packet.getPoint();
-        ECPoint publicKey = packet.getPublicKey();
-        ECPoint V = packet.getV();
-        BigInteger r = packet.getR();
-        BigInteger n = packet.getN();
+    public boolean verify(ECPoint genPoint, ECPoint publicKey, ECPoint V, BigInteger r, BigInteger n) throws IOException {
         BigInteger c = packet.getC();
 
         // TODO: check point is on the elliptical curve ??
@@ -29,17 +24,24 @@ public class Verifier {
 
         ECPoint testV = genPoint.multiply(r).add(publicKey.multiply(c));
 
-        PrintStream out = new PrintStream(new FileOutputStream("./src/password_server/output.txt"));
-        out.println(V.getX());
-        out.println(testV.getX());
-        out.println(V.getY());
-        out.println(testV.getY());
+        boolean output = V.getX().equals(testV.getX()) && V.getY().equals(testV.getY());
+
+        PrintStream out = new PrintStream(new FileOutputStream(".out/production/6.857_ZKPassword/out.txt"));
+
+        out.println(output? "y" : "n");
+
+        out.close();
+
+//        out.println(V.getX());
+//        out.println(testV.getX());
+//        out.println(V.getY());
+//        out.println(testV.getY());
 
 //        System.out.println(V.getX());
 //        System.out.println(testV.getX());
 //        System.out.println(V.getY());
 //        System.out.println(testV.getY());
 
-        return V.getX().equals(testV.getX()) && V.getY().equals(testV.getY());
+        return output;
     }
 }
