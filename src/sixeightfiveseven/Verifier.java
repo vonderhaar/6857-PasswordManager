@@ -4,6 +4,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.io.PrintStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Verifier {
 
@@ -15,8 +19,8 @@ public class Verifier {
 
     }
 
-    public boolean verify(ECPoint genPoint, ECPoint publicKey, ECPoint V, BigInteger r, BigInteger n) throws IOException {
-        BigInteger c = packet.getC();
+    public boolean verify(ECPoint genPoint, ECPoint publicKey, ECPoint V, BigInteger r, BigInteger n) throws IOException, NoSuchAlgorithmException {
+        BigInteger c = makeChallenge(genPoint, publicKey, V);
 
         // TODO: check point is on the elliptical curve ??
         BigInteger littleH = p.divide(n);
@@ -32,16 +36,33 @@ public class Verifier {
 
         out.close();
 
-//        out.println(V.getX());
-//        out.println(testV.getX());
-//        out.println(V.getY());
-//        out.println(testV.getY());
-
-//        System.out.println(V.getX());
-//        System.out.println(testV.getX());
-//        System.out.println(V.getY());
-//        System.out.println(testV.getY());
 
         return output;
+    }
+
+    private static BigInteger makeChallenge(ECPoint genPoint, ECPoint publicKey, ECPoint V) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        List<Byte> toHashList = new ArrayList<>();
+        addByteArray(toHashList, genPoint.getX().toByteArray());
+        addByteArray(toHashList, genPoint.getY().toByteArray());
+        addByteArray(toHashList, V.getX().toByteArray());
+        addByteArray(toHashList, V.getY().toByteArray());
+        addByteArray(toHashList, publicKey.getX().toByteArray());
+        addByteArray(toHashList, publicKey.getY().toByteArray());
+//        addByteArray(toHashList, userID.toByteArray());
+
+        byte[] toHash = new byte[toHashList.size()];
+        for(int i = 0; i < toHashList.size(); i++) {
+            toHash[i] = toHashList.get(i).byteValue();
+        }
+        BigInteger c = new BigInteger(digest.digest(toHash));
+        return c.abs();
+    }
+
+
+    private static void addByteArray(List<Byte> aryList, byte[] ary) {
+        for (byte b : ary) {
+            aryList.add(b);
+        }
     }
 }

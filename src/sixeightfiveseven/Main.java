@@ -2,10 +2,11 @@ package sixeightfiveseven;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
     	Verifier verifier = new Verifier();
 
     	BigInteger xCoord = new BigInteger(args[0]);
