@@ -1,12 +1,19 @@
 package sixeightfiveseven;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+
+
+		PrintStream out = new PrintStream(new FileOutputStream("/home/sylvielee/Desktop/out.txt"));
+		out.println("this is a test");
+		out.close();
     	Verifier verifier = new Verifier();
 
     	BigInteger xCoord = new BigInteger(args[0]);
