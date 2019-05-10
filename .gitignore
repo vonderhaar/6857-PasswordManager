@@ -2,3 +2,4 @@
 *.iml
 .idea/*
 META-INF/MANIFEST.MF
+out/production/6.857_ZKPassword/out.txt
