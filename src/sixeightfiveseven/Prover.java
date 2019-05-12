@@ -14,7 +14,6 @@ public class Prover {
     private BigInteger userID;
     private BigInteger littleV;
     private ECPoint bigV;
-    private BigInteger littleH;
     private BigInteger littleR;
     private BigInteger c;
 
@@ -28,7 +27,7 @@ public class Prover {
         this.userID = userID;
         chooseKeys();
         computeV();
-        this.c = makeChallenge(genPoint, publicKey, bigV);
+        this.c = makeChallenge(genPoint, publicKey, bigV, userID);
         computeR();
     }
 
@@ -57,7 +56,8 @@ public class Prover {
         SecureRandom random = new SecureRandom();
         return new BigInteger(max.toString(2).length(), random).mod(max).add(BigInteger.ONE);
     }
-    private static BigInteger makeChallenge(ECPoint genPoint, ECPoint publicKey, ECPoint V) throws NoSuchAlgorithmException {
+    private static BigInteger makeChallenge(ECPoint genPoint, ECPoint publicKey, ECPoint V, BigInteger userID)
+            throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         List<Byte> toHashList = new ArrayList<>();
         addByteArray(toHashList, genPoint.getX().toByteArray());
@@ -66,7 +66,7 @@ public class Prover {
         addByteArray(toHashList, V.getY().toByteArray());
         addByteArray(toHashList, publicKey.getX().toByteArray());
         addByteArray(toHashList, publicKey.getY().toByteArray());
-//        addByteArray(toHashList, userID.toByteArray());
+        addByteArray(toHashList, userID.toByteArray());
 
         byte[] toHash = new byte[toHashList.size()];
         for(int i = 0; i < toHashList.size(); i++) {

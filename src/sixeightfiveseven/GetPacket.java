@@ -25,6 +25,8 @@ public class GetPacket {
         try {
             ubuntuButton.addActionListener(new getPacket("Ubuntu"));
             myMacButton.addActionListener(new getPacket("Mac"));
+            //TODO
+            AddNewServer.addActionListener(null);
         }
         catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

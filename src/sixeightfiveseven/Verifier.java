@@ -19,8 +19,9 @@ public class Verifier {
 
     }
 
-    public boolean verify(ECPoint genPoint, ECPoint publicKey, ECPoint V, BigInteger r, BigInteger n) throws IOException, NoSuchAlgorithmException {
-        BigInteger c = makeChallenge(genPoint, publicKey, V);
+    public boolean verify(ECPoint genPoint, ECPoint publicKey, ECPoint V, BigInteger r, BigInteger n, BigInteger userId)
+            throws IOException, NoSuchAlgorithmException {
+        BigInteger c = makeChallenge(genPoint, publicKey, V, userId);
 
         // TODO: check point is on the elliptical curve ??
         BigInteger littleH = p.divide(n);
@@ -40,7 +41,8 @@ public class Verifier {
         return output;
     }
 
-    private static BigInteger makeChallenge(ECPoint genPoint, ECPoint publicKey, ECPoint V) throws NoSuchAlgorithmException {
+    private static BigInteger makeChallenge(ECPoint genPoint, ECPoint publicKey, ECPoint V, BigInteger userID)
+            throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         List<Byte> toHashList = new ArrayList<>();
         addByteArray(toHashList, genPoint.getX().toByteArray());
@@ -49,7 +51,7 @@ public class Verifier {
         addByteArray(toHashList, V.getY().toByteArray());
         addByteArray(toHashList, publicKey.getX().toByteArray());
         addByteArray(toHashList, publicKey.getY().toByteArray());
-//        addByteArray(toHashList, userID.toByteArray());
+        addByteArray(toHashList, userID.toByteArray());
 
         byte[] toHash = new byte[toHashList.size()];
         for(int i = 0; i < toHashList.size(); i++) {

@@ -27,9 +27,9 @@ public class Main {
 
 		BigInteger n = new BigInteger(args[7], 16);
 
-		//BigInteger userId = new BigInteger(args[8]);
+		BigInteger userId = new BigInteger(args[8]);
 
-		boolean accept = verifier.verify(genPoint, publicKey, V, r, n);
+		boolean accept = verifier.verify(genPoint, publicKey, V, r, n, userId);
 
 		System.out.println("Accepted: " + accept);
     }
