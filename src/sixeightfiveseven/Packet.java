@@ -55,4 +55,24 @@ public class Packet {
     public BigInteger getN() { return this.n; }
 
     public BigInteger getC() { return this.c; }
+
+    public String toSSH() {
+        StringBuilder output = new StringBuilder();
+        output.append(this.getPoint().getX().toString());
+        output.append(",");
+        output.append(this.getPoint().getY().toString());
+        output.append(",");
+        output.append(this.getPublicKey().getX().toString());
+        output.append(",");
+        output.append(this.getPublicKey().getY().toString());
+        output.append(",");
+        output.append(this.getV().getX().toString());
+        output.append(",");
+        output.append(this.getV().getY().toString());
+        output.append(",");
+        output.append(this.getR().toString());
+        output.append(",");
+        output.append(this.getN().toString(16));
+        return output.toString();
+    }
 }
