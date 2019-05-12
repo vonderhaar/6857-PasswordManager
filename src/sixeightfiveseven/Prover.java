@@ -16,7 +16,6 @@ public class Prover {
     private ECPoint bigV;
     private BigInteger littleH;
     private BigInteger littleR;
-    private Verifier verifier;
     private BigInteger c;
 
     // define generator point and big prime n
@@ -25,11 +24,11 @@ public class Prover {
     private ECPoint genPoint = new ECPoint(xCoord, yCoord);
     private BigInteger n = new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141", 16);
 
-    public Prover(BigInteger userID, Verifier verifier) {
+    public Prover(BigInteger userID) throws NoSuchAlgorithmException{
         this.userID = userID;
-        this.verifier = verifier;
         chooseKeys();
         computeV();
+        this.c = makeChallenge(genPoint, publicKey, bigV);
         computeR();
     }
 
@@ -57,5 +56,31 @@ public class Prover {
     private BigInteger chooseRandom(BigInteger max) {
         SecureRandom random = new SecureRandom();
         return new BigInteger(max.toString(2).length(), random).mod(max).add(BigInteger.ONE);
+    }
+    private static BigInteger makeChallenge(ECPoint genPoint, ECPoint publicKey, ECPoint V) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        List<Byte> toHashList = new ArrayList<>();
+        addByteArray(toHashList, genPoint.getX().toByteArray());
+        addByteArray(toHashList, genPoint.getY().toByteArray());
+        addByteArray(toHashList, V.getX().toByteArray());
+        addByteArray(toHashList, V.getY().toByteArray());
+        addByteArray(toHashList, publicKey.getX().toByteArray());
+        addByteArray(toHashList, publicKey.getY().toByteArray());
+//        addByteArray(toHashList, userID.toByteArray());
+
+        byte[] toHash = new byte[toHashList.size()];
+        for(int i = 0; i < toHashList.size(); i++) {
+            toHash[i] = toHashList.get(i).byteValue();
+        }
+        BigInteger c = new BigInteger(digest.digest(toHash));
+        return c.abs();
+    }
+
+
+
+    private static void addByteArray(List<Byte> aryList, byte[] ary) {
+        for (byte b : ary) {
+            aryList.add(b);
+        }
     }
 }

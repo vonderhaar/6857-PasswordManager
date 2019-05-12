@@ -30,7 +30,7 @@ public class Verifier {
 
         boolean output = V.getX().equals(testV.getX()) && V.getY().equals(testV.getY());
 
-        PrintStream out = new PrintStream(new FileOutputStream("/home/sylvielee/Desktop/out.txt"));
+        PrintStream out = new PrintStream(new FileOutputStream("./out/production/6.857_ZKPassword/out.txt"));
 
         out.println(output? "y" : "n");
 

@@ -9,11 +9,6 @@ import java.security.NoSuchAlgorithmException;
 public class Main {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-		System.out.println("end me");
-
-		PrintStream out = new PrintStream(new FileOutputStream("/home/sylvielee/Desktop/out.txt"));
-		out.println("this is a test");
-		out.close();
     	Verifier verifier = new Verifier();
 
     	BigInteger xCoord = new BigInteger(args[0]);
@@ -30,9 +25,9 @@ public class Main {
 
 		BigInteger r = new BigInteger(args[6]);
 
-		BigInteger n = new BigInteger(args[7]);
+		BigInteger n = new BigInteger(args[7], 16);
 
-		BigInteger userId = new BigInteger(args[8]);
+		//BigInteger userId = new BigInteger(args[8]);
 
 		boolean accept = verifier.verify(genPoint, publicKey, V, r, n);
 

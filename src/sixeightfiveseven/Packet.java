@@ -24,7 +24,7 @@ public class Packet {
 
     public Packet(String genPoint, String publicKey, String r, String V, String n, String c) {
         this.r = new BigInteger(r);
-        this.n = new BigInteger(n);
+        this.n = new BigInteger(n, 16);
         this.c = new BigInteger(c);
 
         this.point = makePointFromString(genPoint);
