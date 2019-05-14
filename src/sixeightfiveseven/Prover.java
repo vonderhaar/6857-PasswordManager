@@ -56,6 +56,8 @@ public class Prover {
         SecureRandom random = new SecureRandom();
         return new BigInteger(max.toString(2).length(), random).mod(max).add(BigInteger.ONE);
     }
+
+    // c = H(G|| V || A || UserID || OtherInfo)
     private static BigInteger makeChallenge(ECPoint genPoint, ECPoint publicKey, ECPoint V, BigInteger userID)
             throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -73,10 +75,8 @@ public class Prover {
             toHash[i] = toHashList.get(i).byteValue();
         }
         BigInteger c = new BigInteger(digest.digest(toHash));
-        return c.abs();
+        return c.abs(); // overflow, so take absolute value
     }
-
-
 
     private static void addByteArray(List<Byte> aryList, byte[] ary) {
         for (byte b : ary) {
